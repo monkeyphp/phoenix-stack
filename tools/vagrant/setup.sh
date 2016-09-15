@@ -39,7 +39,7 @@ fi
 echo -e '\E[1;32m'"\033[1m Installed epel-release \033[0m"
 
 ############################################################################### 
-# Install gcc                                                        #
+# Install gcc                                                                 #
 ###############################################################################
 echo -e '\E[0;35m'"\033[1m Attempting to install gcc \033[0m"
 yum -q -y install gcc
@@ -51,7 +51,7 @@ fi
 echo -e '\E[1;32m'"\033[1m Installed gcc \033[0m"
 
 ############################################################################### 
-# Install gcc-c++                                                        #
+# Install gcc-c++                                                             #
 ###############################################################################
 echo -e '\E[0;35m'"\033[1m Attempting to install gcc-c++ \033[0m"
 yum -q -y install gcc-c++
@@ -63,7 +63,7 @@ fi
 echo -e '\E[1;32m'"\033[1m Installed gcc-c++ \033[0m"
 
 ############################################################################### 
-# Install glibc-devel                                                        #
+# Install glibc-devel                                                         #
 ###############################################################################
 echo -e '\E[0;35m'"\033[1m Attempting to install glibc-devel \033[0m"
 yum -q -y install glibc-devel
@@ -75,7 +75,7 @@ fi
 echo -e '\E[1;32m'"\033[1m Installed glibc-devel \033[0m"
 
 ############################################################################### 
-# Install make                                                        #
+# Install make                                                                #
 ###############################################################################
 echo -e '\E[0;35m'"\033[1m Attempting to install make \033[0m"
 yum -q -y install make
@@ -159,7 +159,7 @@ fi
 echo -e '\E[1;32m'"\033[1m Installed wget \033[0m"
 
 ###############################################################################
-# Install wxBase                                                                #
+# Install wxBase                                                              #
 ###############################################################################
 echo -e '\E[0;35m'"\033[1m Attempting to install wxBase \033[0m"
 yum -q -y install wxBase
@@ -171,7 +171,7 @@ fi
 echo -e '\E[1;32m'"\033[1m Installed wxBase \033[0m"
 
 ###############################################################################
-# Download erlang-solutions RPM                                                             #
+# Download erlang-solutions RPM                                               #
 ###############################################################################
 echo -e '\E[0;35m'"\033[1m Attempting to download erlang-solutions-1.0-1.noarch.rpm from erlang-solutionsorg \033[0m"
 wget -q https://packages.erlang-solutions.com/erlang-solutions-1.0-1.noarch.rpm
@@ -234,7 +234,7 @@ echo -e '\E[0;35m'"\033[1m Running make \033[0m"
 make clean test
 
 ############################################################################### 
-# Symlink binaries                                                            #     #
+# Symlink binaries                                                            #
 ############################################################################### 
 echo -e '\E[0;35m'"\033[1m Symlinking binaries \033[0m"
 ln -s /home/vagrant/elixir/bin/elixir /usr/bin/elixir
