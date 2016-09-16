@@ -1,6 +1,14 @@
 #!/bin/bash
 
-# Install the stack for Phoenix development
+############################################################################### 
+# Shell script used to build the development stack for developing             #
+# Phoenix Framework applications.                                             #
+#                                                                             #
+# @link http://www.phoenixframework.org/                                      #
+# @link http://www.phoenixframework.org/docs/installation                     #
+# @link http://www.phoenixframework.org/docs/up-and-running                   #
+############################################################################### 
+
 echo -e '\E[1;33m'"\033[1m Installing Phoenix Development Stack \033[0m"
 
 ############################################################################### 
@@ -408,7 +416,7 @@ fi
 echo -e '\E[1;32m'"\033[1m Started Postgres \033[0m"
 
 ###############################################################################
-# Enabling Postgresql
+# Enabling Postgresql                                                         #
 ###############################################################################
 echo -e '\E[0;35m'"\033[1m Attempting to enable Postgres \033[0m"
 systemctl enable postgresql
