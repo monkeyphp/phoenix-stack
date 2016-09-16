@@ -45,7 +45,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   require 'ffi'
   config.vm.synced_folder(
     "../../",
-    "/mnt/project/pheonix",
+    "/mnt/project/phoenix",
     nfs: (FFI::Platform::IS_WINDOWS ? false: true)
   )
 
