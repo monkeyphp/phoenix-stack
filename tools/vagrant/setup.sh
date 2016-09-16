@@ -265,3 +265,40 @@ if [ $? -ne 0 ];
         exit $?
 fi
 echo -e '\E[1;32m'"\033[1m Installed nodejs \033[0m"
+
+
+###############################################################################
+# Install inotify-tools                                                              #
+###############################################################################
+echo -e '\E[0;35m'"\033[1m Attempting to install inotify-tools \033[0m"
+yum -y -q install inotify-tools
+if [ $? -ne 0 ];
+    then 
+        echo -e '\E[0;41m'"\033[1m Could not install inotify-tools \033[0m"
+        exit $?
+fi
+echo -e '\E[1;32m'"\033[1m Installed inotify-tools \033[0m"
+
+###############################################################################
+# Install hex                                                                 #
+###############################################################################
+echo -e '\E[0;35m'"\033[1m Attempting to install hex \033[0m"
+mix local.hex --force
+if [ $? -ne 0 ];
+    then 
+        echo -e '\E[0;41m'"\033[1m Could not install hex \033[0m"
+        exit $?
+fi
+echo -e '\E[1;32m'"\033[1m Installed hex \033[0m"
+
+###############################################################################
+# Install Phoenix                                                                 #
+###############################################################################
+echo -e '\E[0;35m'"\033[1m Attempting to install Phoenix \033[0m"
+mix archive.install https://github.com/phoenixframework/archives/raw/master/phoenix_new.ez --force
+if [ $? -ne 0 ];
+    then 
+        echo -e '\E[0;41m'"\033[1m Could not install Phoenix \033[0m"
+        exit $?
+fi
+echo -e '\E[1;32m'"\033[1m Installed Phoenix \033[0m"
