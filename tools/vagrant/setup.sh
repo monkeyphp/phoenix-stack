@@ -268,7 +268,7 @@ echo -e '\E[1;32m'"\033[1m Installed nodejs \033[0m"
 
 
 ###############################################################################
-# Install inotify-tools                                                              #
+# Install inotify-tools                                                       #
 ###############################################################################
 echo -e '\E[0;35m'"\033[1m Attempting to install inotify-tools \033[0m"
 yum -y -q install inotify-tools
@@ -292,7 +292,7 @@ fi
 echo -e '\E[1;32m'"\033[1m Installed hex \033[0m"
 
 ###############################################################################
-# Install Phoenix                                                                 #
+# Install Phoenix                                                             #
 ###############################################################################
 echo -e '\E[0;35m'"\033[1m Attempting to install Phoenix \033[0m"
 mix archive.install https://github.com/phoenixframework/archives/raw/master/phoenix_new.ez --force
@@ -302,3 +302,119 @@ if [ $? -ne 0 ];
         exit $?
 fi
 echo -e '\E[1;32m'"\033[1m Installed Phoenix \033[0m"
+
+###############################################################################
+# Install Postgresql                                                          #
+#
+# @link https://wiki.postgresql.org/wiki/YUM_Installation
+# @link https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-centos-7
+# @link http://www.kelvinwong.ca/tag/pg_hba-conf/
+###############################################################################
+echo -e '\E[0;35m'"\033[1m Attempting to install Postgresql \033[0m"
+yum install -y -q postgresql-contrib postgresql-server postgresql postgresql-libs uuid
+if [ $? -ne 0 ];
+    then 
+        echo -e '\E[0;41m'"\033[1m Could not install Postgresql \033[0m"
+        exit $?
+fi
+echo -e '\E[1;32m'"\033[1m Installed Postgresql \033[0m"
+
+###############################################################################
+# Init the database
+###############################################################################
+echo -e '\E[0;35m'"\033[1m Attempting to init db \033[0m"
+postgresql-setup initdb
+if [ $? -ne 0 ];
+    then 
+        echo -e '\E[0;41m'"\033[1m Could not init db \033[0m"
+        exit $?
+fi
+echo -e '\E[1;32m'"\033[1m Init db successful \033[0m"
+
+############################################################################### 
+# Change to the  ~/ directory                                                 #
+############################################################################### 
+echo -e '\E[0;35m'"\033[1m Attempting to change to the ~/ directory \033[0m"
+cd /var/lib/pgsql/data
+if [ $? -ne 0 ]; 
+    then
+        echo -e '\E[0;41m'"\033[1m Could not change to the ~/ directory \033[0m"
+        exit $?
+fi
+echo -e '\E[1;32m'"\033[1m Changed to the ~/ directory \033[0m"
+
+############################################################################### 
+# Backup pg_hba.conf                                                          #
+############################################################################### 
+echo -e '\E[0;35m'"\033[1m Attempting to backup pg_hba.conf \033[0m"
+mv /var/lib/pgsql/data/pg_hba.conf /var/lib/pgsql/data/pg_hba.bak
+if [ $? -ne 0 ]; 
+    then
+        echo -e '\E[0;41m'"\033[1m Could not backup pg_hba.conf \033[0m"
+        exit $?
+fi
+echo -e '\E[1;32m'"\033[1m Successfully backed up pg_hba.conf \033[0m"
+
+############################################################################### 
+# Create pg_hba.conf                                                          #
+############################################################################### 
+echo -e '\E[0;35m'"\033[1m Attempting to create pg_hba.conf \033[0m"
+touch ./pg_hba.conf
+if [ $? -ne 0 ]; 
+    then
+        echo -e '\E[0;41m'"\033[1m Could not create pg_hba.conf \033[0m"
+        exit $?
+fi
+echo -e '\E[1;32m'"\033[1m Created pg_hba.conf \033[0m"
+
+###############################################################################
+# Update pg_hba.conf                                                          #
+###############################################################################
+echo -e '\E[0;35m'"\033[1m Attempting to update pg_hba.conf \033[0m"
+echo -e "# TYPE  DATABASE        USER            ADDRESS                 METHOD" >  ./pg_hba.conf
+echo -e "local   all             all                                     peer"   >> ./pg_hba.conf
+echo -e "host    all             all             127.0.0.1/32            md5"    >> ./pg_hba.conf
+echo -e "host    all             all             ::1/128                 md5"    >> ./pg_hba.conf
+if [ $? -ne 0 ]; 
+    then
+        echo -e '\E[0;41m'"\033[1m Could not update pg_hba.conf \033[0m"
+        exit $?
+fi
+echo -e '\E[1;32m'"\033[1m Updated pg_hba.conf \033[0m"
+
+############################################################################### 
+# Update pg_hba.conf permissions                                              #
+############################################################################### 
+echo -e '\E[0;35m'"\033[1m Attempting to update pg_hba.conf permissions \033[0m"
+chmod 600 ./pg_hba.conf
+chown postgres:postgres ./pg_hba.conf
+if [ $? -ne 0 ]; 
+    then
+        echo -e '\E[0;41m'"\033[1m Could not update pg_hba.conf permissions \033[0m"
+        exit $?
+fi
+echo -e '\E[1;32m'"\033[1m Updated pg_hba.conf permissions \033[0m"
+
+###############################################################################
+# Start Postgresql                                                            #
+###############################################################################
+echo -e '\E[0;35m'"\033[1m Attempting to start Postgres \033[0m"
+systemctl start postgresql
+if [ $? -ne 0 ]; 
+    then
+        echo -e '\E[0;41m'"\033[1m Could not start Postgres \033[0m"
+        exit $?
+fi
+echo -e '\E[1;32m'"\033[1m Started Postgres \033[0m"
+
+###############################################################################
+# Enabling Postgresql
+###############################################################################
+echo -e '\E[0;35m'"\033[1m Attempting to enable Postgres \033[0m"
+systemctl enable postgresql
+if [ $? -ne 0 ]; 
+    then
+        echo -e '\E[0;41m'"\033[1m Could not enable Postgres \033[0m"
+        exit $?
+fi
+echo -e '\E[1;32m'"\033[1m Enabled Postgres \033[0m"
