@@ -17,10 +17,6 @@ machine.
 - [Virtual Box](https://www.virtualbox.org/wiki/Downloads)
 - [Vagrant](https://www.vagrantup.com/downloads.html)
 
-
-The paths supplied in the following examples are not to be taken literally; you
-will need to transpose your own base path.
-
 ### Git
 
 Install Git from [here](http://git-scm.com/downloads)
