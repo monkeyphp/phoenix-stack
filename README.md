@@ -10,7 +10,44 @@ It will attempt to install the stack as described in the
 
 ## Getting Started
 
-### Getting the Repository
+You will need the following applications, installed on your development
+machine.
+
+- [Git](http://git-scm.com/downloads)
+- [Virtual Box](https://www.virtualbox.org/wiki/Downloads)
+- [Vagrant](https://www.vagrantup.com/downloads.html)
+
+
+The paths supplied in the following examples are not to be taken literally; you
+will need to transpose your own base path.
+
+### Git
+
+Install Git from [here](http://git-scm.com/downloads)
+
+```bash
+    $ git --version
+    $ git version 1.9.5 (Apple Git-50.3)
+```
+
+### Virtual Box
+
+Install VirtualBox from [here](https://www.virtualbox.org/wiki/Downloads)
+
+```bash
+    $ vboxmanage --version
+    $ 4.3.24r98716
+```
+### Vagrant
+
+Install Vagrant from [here](https://www.vagrantup.com/downloads.html)
+
+```bash
+    $ vagrant --version
+    $ Vagrant 1.6.5
+
+
+## Getting the Code
 
 Download the release as tar.gz or zip format
 
