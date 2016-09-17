@@ -92,6 +92,9 @@ The following commands should start the Vagrant VM and install the development s
     $ mix ecto.create
 ```
 
+If you get the error `** (Mix) The task "ecto.create" could not be found` check that you 
+have changed to your application root directory ie `cd /mnt/project/phoenix-stack/myapp`
+
 ## Starting the Server
 
 ```bash
