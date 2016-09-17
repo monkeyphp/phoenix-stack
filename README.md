@@ -10,12 +10,24 @@ It will attempt to install the stack as described in the
 
 ## Getting Started
 
-### Clone out this repository
+### Getting the Repository
+
+Download the release as tar.gz or zip format
+
+```bash
+    $ curl -OL https://github.com/monkeyphp/phoenix-stack/archive/0.0.1.tar.gz
+    $ tar -xzf 0.0.1.tar.gz
+    $ mv phoenix-stack-0.0.1 phoenix-stack
+    $ cd phoenix-stack 
+```
+
+Or clone out this repository
 
 ```bash
     $ git clone git@github.com:monkeyphp/phoenix-stack.git
+    $ cd phoenix-stack
+    $ rm -Rf .git
 ```
-
 
 ### Start the Vagrant machine
 
