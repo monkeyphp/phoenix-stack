@@ -41,7 +41,7 @@ Install Vagrant from [here](https://www.vagrantup.com/downloads.html)
 ```bash
     $ vagrant --version
     $ Vagrant 1.6.5
-
+```
 
 ## Getting the Code
 
