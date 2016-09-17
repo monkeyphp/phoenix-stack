@@ -45,11 +45,10 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   require 'ffi'
   config.vm.synced_folder(
     "../../",
-    "/mnt/project/phoenix",
+    "/mnt/project/phoenix-stack",
     nfs: (FFI::Platform::IS_WINDOWS ? false: true)
   )
 
-  
   config.vm.provision "shell", path: "setup.sh"
 
   # Provider-specific configuration so you can fine-tune various

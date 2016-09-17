@@ -7,6 +7,9 @@
 # @link http://www.phoenixframework.org/                                      #
 # @link http://www.phoenixframework.org/docs/installation                     #
 # @link http://www.phoenixframework.org/docs/up-and-running                   #
+# @link https://wiki.postgresql.org/wiki/YUM_Installation                     #
+# @link https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-centos-7
+# @link http://www.kelvinwong.ca/tag/pg_hba-conf/                             #
 ############################################################################### 
 
 echo -e '\E[1;33m'"\033[1m Installing Phoenix Development Stack \033[0m"
@@ -292,6 +295,7 @@ echo -e '\E[1;32m'"\033[1m Installed inotify-tools \033[0m"
 ###############################################################################
 echo -e '\E[0;35m'"\033[1m Attempting to install hex \033[0m"
 runuser -l vagrant -c 'mix local.hex --force'
+runuser -l vagrant -c 'mix local.rebar --force'
 if [ $? -ne 0 ];
     then 
         echo -e '\E[0;41m'"\033[1m Could not install hex \033[0m"
@@ -313,10 +317,6 @@ echo -e '\E[1;32m'"\033[1m Installed Phoenix \033[0m"
 
 ###############################################################################
 # Install Postgresql                                                          #
-#
-# @link https://wiki.postgresql.org/wiki/YUM_Installation
-# @link https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-centos-7
-# @link http://www.kelvinwong.ca/tag/pg_hba-conf/
 ###############################################################################
 echo -e '\E[0;35m'"\033[1m Attempting to install Postgresql \033[0m"
 yum install -y -q postgresql-contrib postgresql-server postgresql postgresql-libs uuid
@@ -328,7 +328,7 @@ fi
 echo -e '\E[1;32m'"\033[1m Installed Postgresql \033[0m"
 
 ###############################################################################
-# Init the database
+# Init the database                                                           #
 ###############################################################################
 echo -e '\E[0;35m'"\033[1m Attempting to init db \033[0m"
 postgresql-setup initdb
@@ -338,6 +338,54 @@ if [ $? -ne 0 ];
         exit $?
 fi
 echo -e '\E[1;32m'"\033[1m Init db successful \033[0m"
+
+###############################################################################
+# Start Postgresql                                                            #
+###############################################################################
+echo -e '\E[0;35m'"\033[1m Attempting to start Postgres \033[0m"
+systemctl start postgresql
+if [ $? -ne 0 ]; 
+    then
+        echo -e '\E[0;41m'"\033[1m Could not start Postgres \033[0m"
+        exit $?
+fi
+echo -e '\E[1;32m'"\033[1m Started Postgres \033[0m"
+
+###############################################################################
+# Enabling Postgresql                                                         #
+###############################################################################
+echo -e '\E[0;35m'"\033[1m Attempting to enable Postgres \033[0m"
+systemctl enable postgresql
+if [ $? -ne 0 ]; 
+    then
+        echo -e '\E[0;41m'"\033[1m Could not enable Postgres \033[0m"
+        exit $?
+fi
+echo -e '\E[1;32m'"\033[1m Enabled Postgres \033[0m"
+
+############################################################################### 
+# Set postgres password                                                       #
+############################################################################### 
+echo -e '\E[0;35m'"\033[1m Attempting to set the postgres password \033[0m"
+sudo -u postgres psql -U postgres -d postgres -c "alter user postgres with password 'postgres';"
+if [ $? -ne 0 ]; 
+    then
+        echo -e '\E[0;41m'"\033[1m Could not set the postgres password \033[0m"
+        exit $?
+fi
+echo -e '\E[1;32m'"\033[1m Set the postgres password \033[0m"
+
+###############################################################################
+# Stop Postgresql                                                             #
+###############################################################################
+echo -e '\E[0;35m'"\033[1m Attempting to stop Postgres \033[0m"
+systemctl stop postgresql
+if [ $? -ne 0 ]; 
+    then
+        echo -e '\E[0;41m'"\033[1m Could not stop Postgres \033[0m"
+        exit $?
+fi
+echo -e '\E[1;32m'"\033[1m Stopped Postgres \033[0m"
 
 ############################################################################### 
 # Change to the  ~/ directory                                                 #
@@ -380,7 +428,7 @@ echo -e '\E[1;32m'"\033[1m Created pg_hba.conf \033[0m"
 ###############################################################################
 echo -e '\E[0;35m'"\033[1m Attempting to update pg_hba.conf \033[0m"
 echo -e "# TYPE  DATABASE        USER            ADDRESS                 METHOD" >  ./pg_hba.conf
-echo -e "local   all             all                                     peer"   >> ./pg_hba.conf
+echo -e "local   all             all                                     md5"    >> ./pg_hba.conf
 echo -e "host    all             all             127.0.0.1/32            md5"    >> ./pg_hba.conf
 echo -e "host    all             all             ::1/128                 md5"    >> ./pg_hba.conf
 if [ $? -ne 0 ]; 
@@ -404,25 +452,13 @@ fi
 echo -e '\E[1;32m'"\033[1m Updated pg_hba.conf permissions \033[0m"
 
 ###############################################################################
-# Start Postgresql                                                            #
+# Restart Postgresql                                                          #
 ###############################################################################
-echo -e '\E[0;35m'"\033[1m Attempting to start Postgres \033[0m"
-systemctl start postgresql
+echo -e '\E[0;35m'"\033[1m Attempting to restart Postgres \033[0m"
+systemctl restart postgresql
 if [ $? -ne 0 ]; 
     then
-        echo -e '\E[0;41m'"\033[1m Could not start Postgres \033[0m"
+        echo -e '\E[0;41m'"\033[1m Could not restart Postgres \033[0m"
         exit $?
 fi
-echo -e '\E[1;32m'"\033[1m Started Postgres \033[0m"
-
-###############################################################################
-# Enabling Postgresql                                                         #
-###############################################################################
-echo -e '\E[0;35m'"\033[1m Attempting to enable Postgres \033[0m"
-systemctl enable postgresql
-if [ $? -ne 0 ]; 
-    then
-        echo -e '\E[0;41m'"\033[1m Could not enable Postgres \033[0m"
-        exit $?
-fi
-echo -e '\E[1;32m'"\033[1m Enabled Postgres \033[0m"
+echo -e '\E[1;32m'"\033[1m Restarted Postgres \033[0m"
